@@ -1,0 +1,27 @@
+name: Deploy Angular Build to EC2
+
+on:
+  push:
+    branches:
+      - master  # or your deployment branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Add SSH Key
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@13.127.64.22 << 'EOF'
+          rm -rf fuodaydist
+          git clone https://github.com/Easwar-raj/fuodaydist.git 
+          sudo cp -r fuodaydist/* /var/www/html/
+        EOF
