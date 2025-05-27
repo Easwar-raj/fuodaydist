@@ -21,7 +21,7 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@13.127.64.22 << 'EOF'
-          rm -rf fuodaydist
+          sudo rm -rf fuodaydist
           git clone https://github.com/Easwar-raj/fuodaydist.git 
           sudo cp -r fuodaydist/* /var/www/html/
         EOF
